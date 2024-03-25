@@ -1,0 +1,14 @@
+<% layout('layout/boilerplate') -%>
+<h1>edit</h1>
+<form action="/book/<%= book.id %>?_method=PUT" method="post">
+  <label for="title">Book title</label>
+  <input
+    type="text"
+    name="BookData[title]"
+    id="title"
+    value="<%= book.title %>"
+  />
+  <button>done</button>
+</form>
+
+<a href="/book/<%= book.id %>">back</a>

@@ -1,0 +1,8 @@
+<% layout('layout/boilerplate') -%>
+<h1><%= book.title %></h1>
+
+<form action="/book/<%= book.id %>?_method=DELETE" method="post">
+  <button>delete</button>
+</form>
+<a href="/book/<%= book.id %>/edit">edit</a>
+<a href="/book">back</a>

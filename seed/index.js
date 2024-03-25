@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const book = require("./books");
 const BookData = require("../models/book");
 
 //mongoose connection
@@ -13,7 +14,7 @@ const seedDB = async () => {
   await BookData.deleteMany({});
   for (let i = 0; i < 10; i++) {
     const randomBook = Math.floor(Math.random() * 100); //selecting random books from seed/books.js
-    const book = new BookData({
+    const books = new BookData({
       author: `${book[randomBook].author}`,
       country: `${book[randomBook].country}`,
       language: `${book[randomBook].language}`,
@@ -21,6 +22,7 @@ const seedDB = async () => {
       title: `${book[randomBook].title}`,
       year: `${book[randomBook].year}`,
     });
+    await books.save();
   }
 };
 

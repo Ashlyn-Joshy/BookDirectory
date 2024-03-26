@@ -1,9 +1,20 @@
 <% layout('layout/boilerplate') -%>
-<h1>all books</h1>
-<ul>
-  <% for(let b of book) {%>
-  <li><a href="/book/<%= b.id %>"><%= b.title %></a></li>
-  <% } %>
-</ul>
 
-<a href="/book/new">Add new book</a>
+<div class="container my-3">
+  <h1>All Books</h1>
+  <% for(let b of book) {%>
+  <div class="card mt-3">
+    <div class="card-body">
+      <h5 class="card-title"><%= b.title %></h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary"><%= b.author %></h6>
+      <p class="card-text">
+        Some quick example text to build on the card title and make up the bulk
+        of the card's content.
+      </p>
+      <a href="/book/<%= b.id %>" class="card-link btn btn-primary"
+        >view <%= b.title %></a
+      >
+    </div>
+  </div>
+  <% } %>
+</div>

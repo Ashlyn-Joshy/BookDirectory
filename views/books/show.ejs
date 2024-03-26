@@ -1,13 +1,26 @@
 <% layout('layout/boilerplate') -%>
-<h1><%= book.title %></h1>
-<p>Author: <%= book.author %></p>
-<p>year: <%= book.year %></p>
-<p>country: <%= book.country %></p>
-<p>language: <%= book.language %></p>
-<p>pages: <%= book.pages %></p>
-
-<form action="/book/<%= book.id %>?_method=DELETE" method="post">
-  <button>delete</button>
-</form>
-<a href="/book/<%= book.id %>/edit">edit</a>
-<a href="/book">back</a>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card text-center my-5">
+      <div class="card-header"><%= book.title %></div>
+      <div class="card-body">
+        <h5 class="card-title">Author: <%= book.author %></h5>
+        <p class="card-text">country: <%= book.country %></p>
+        <p class="card-text">language: <%= book.language %></p>
+        <p class="card-text">pages: <%= book.pages %></p>
+        <p class="card-text">year: <%= book.year %></p>
+      </div>
+      <div class="card-footer text-body-secondary">
+        <a href="/book/<%= book.id %>/edit" class="btn btn-success">Edit</a>
+        <form
+          action="/book/<%= book.id %>?_method=DELETE"
+          method="post"
+          class="d-inline"
+        >
+          <button class="btn btn-danger">delete</button>
+        </form>
+      </div>
+    </div>
+    <a href="/book">back</a>
+  </div>
+</div>

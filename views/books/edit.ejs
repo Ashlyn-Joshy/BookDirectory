@@ -1,14 +1,70 @@
 <% layout('layout/boilerplate') -%>
-<h1>edit</h1>
-<form action="/book/<%= book.id %>?_method=PUT" method="post">
-  <label for="title">Book title</label>
-  <input
-    type="text"
-    name="BookData[title]"
-    id="title"
-    value="<%= book.title %>"
-  />
-  <button>done</button>
-</form>
+<div class="row mx-2">
+  <div class="col-md-6 offset-md-3">
+    <h1>edit</h1>
+    <form
+      action="/book/<%= book.id %>?_method=PUT"
+      method="post"
+      class="form-validation"
+      novalidate
+    >
+      <label class="form-label" for="title">Book title</label>
+      <input
+        class="form-control"
+        type="text"
+        name="BookData[title]"
+        id="title"
+        required
+        value="<%= book.title %>"
+      />
+      <label class="form-label" for="author">Author</label>
+      <input
+        type="text"
+        name="BookData[author]"
+        id="author"
+        required
+        class="form-control"
+        value="<%= book.author %>"
+      />
+      <label class="form-label" for="country">country</label>
+      <input
+        type="text"
+        name="BookData[country]"
+        id="country"
+        required
+        class="form-control"
+        value="<%= book.country %>"
+      />
+      <label class="form-label" for="language">language</label>
+      <input
+        type="text"
+        name="BookData[language]"
+        id="language"
+        required
+        class="form-control"
+        value="<%= book.language %>"
+      />
+      <label class="form-label" for="pages">pages</label>
+      <input
+        type="number"
+        name="BookData[pages]"
+        id="pages"
+        required
+        class="form-control"
+        value="<%= book.pages %>"
+      />
+      <label class="form-label" for="year">year</label>
+      <input
+        type="number"
+        name="BookData[year]"
+        id="year"
+        required
+        class="form-control"
+        value="<%= book.year %>"
+      />
+      <button>done</button>
+    </form>
 
-<a href="/book/<%= book.id %>">back</a>
+    <a href="/book/<%= book.id %>">back</a>
+  </div>
+</div>

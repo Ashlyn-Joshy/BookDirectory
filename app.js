@@ -28,7 +28,7 @@ app.use(methodOverride("_method"));
 
 //routes
 app.get("/", (req, res) => {
-  res.send("welcome to the home page");
+  res.render("home");
 });
 
 //routes for books
@@ -82,6 +82,7 @@ app.get(
 );
 app.put(
   "/book/:id",
+  validateBook,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const book = await BookData.findByIdAndUpdate(id, req.body.BookData);

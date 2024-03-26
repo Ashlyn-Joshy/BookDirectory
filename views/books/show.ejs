@@ -1,5 +1,10 @@
 <% layout('layout/boilerplate') -%>
 <h1><%= book.title %></h1>
+<p>Author: <%= book.author %></p>
+<p>year: <%= book.year %></p>
+<p>country: <%= book.country %></p>
+<p>language: <%= book.language %></p>
+<p>pages: <%= book.pages %></p>
 
 <form action="/book/<%= book.id %>?_method=DELETE" method="post">
   <button>delete</button>

@@ -2,7 +2,8 @@
 
 <div class="container my-3">
   <h1>All Books</h1>
-  <% for(let b of book) {%>
+  <!-- displaying only the book data is approved by the admin -->
+  <% for(let b of book) {%> <% if(b.isAdminApproved === true){ %>
   <div class="card mt-3">
     <div class="card-body">
       <h5 class="card-title"><%= b.title %></h5>
@@ -16,5 +17,5 @@
       >
     </div>
   </div>
-  <% } %>
+  <% } %> <% } %>
 </div>

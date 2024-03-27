@@ -1,6 +1,7 @@
 <% layout('layout/boilerplate') -%>
-<div class="row">
-  <div class="col-md-6 offset-md-3">
+<div class="row mx-2">
+  <!-- to display the details of the books -->
+  <div class="col-md-6">
     <div class="card text-center my-5">
       <div class="card-header"><%= book.title %></div>
       <div class="card-body">
@@ -17,10 +18,61 @@
           method="post"
           class="d-inline"
         >
-          <button class="btn btn-danger">delete</button>
+          <button class="btn btn-danger">Delete</button>
         </form>
       </div>
     </div>
-    <a href="/book">back</a>
   </div>
+  <div class="col-md-6 my-5">
+    <!-- to right the review -->
+    <h1>Leave a Review</h1>
+    <form
+      action="/book/<%= book.id %>/review"
+      method="post"
+      class="form-validation"
+      novalidate
+    >
+      <div class="mb-3">
+        <label for="rating" class="form-label">Rating</label>
+        <input
+          type="range"
+          class="form-range"
+          min="1"
+          max="5"
+          id="rating"
+          name="Review[rating]"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="text" class="form-label">Rivew</label>
+        <textarea
+          name="Review[text]"
+          id="text"
+          cols="30"
+          rows="5"
+          class="form-control"
+          required
+        ></textarea>
+      </div>
+      <button class="btn btn-primary">Submit</button>
+    </form>
+
+    <!-- the reviews will be display here -->
+    <h1 class="my-3">Reviews</h1>
+    <% for(let r of book.reviews){ %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <h5 class="card-title">Rating : <%= r.rating %></h5>
+        <p class="card-text">Review : <%= r.text %></p>
+        <form
+          action="/book/<%= book.id %>/review/<%= r.id %>?_method=DELETE"
+          method="post"
+        >
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+    <% } %>
+  </div>
+  <a href="/book">back</a>
 </div>

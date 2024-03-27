@@ -4,8 +4,10 @@ const methodOverride = require("method-override");
 const engine = require("ejs-mate");
 
 const BookData = require("./models/book");
+const Review = require("./models/review");
+
 const expressError = require("./errorhandling/expressError");
-const { bookvalidation } = require("./yup");
+const { bookvalidation, reviewValidation } = require("./yup");
 const wrapAsync = require("./errorhandling/wrapAsync");
 
 //mongoose connection
@@ -58,6 +60,7 @@ app.post(
   validateBook,
   wrapAsync(async (req, res) => {
     const books = await new BookData(req.body.BookData);
+    books.isAdminApproved = false;
     await books.save();
     res.redirect(`/book`);
   })
@@ -67,7 +70,7 @@ app.get(
   "/book/:id",
   wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const book = await BookData.findById(id);
+    const book = await BookData.findById(id).populate("reviews");
     res.render("books/show", { book });
   })
 );
@@ -94,9 +97,49 @@ app.put(
 app.delete(
   "/book/:id",
   wrapAsync(async (req, res) => {
+    //if we are deleting a book data we also delete the all the reviews for that perticular book - code is in the models-books.js file
     const { id } = req.params;
-    const book = await BookData.findByIdAndDelete(id);
+    await BookData.findByIdAndDelete(id);
     res.redirect(`/book`);
+  })
+);
+
+//the middleware to check the review
+const reviewvalidate = async (req, res, next) => {
+  const { error } = await reviewValidation.validate(req.body.Review);
+  if (error) {
+    throw new expressError(msg, 404);
+  } else {
+    next();
+  }
+};
+//adding review to the book details
+app.post(
+  "/book/:id/review",
+  reviewvalidate,
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const book = await BookData.findById(id);
+    const review = await new Review(req.body.Review);
+    book.reviews.push(review);
+    await review.save();
+    await book.save();
+    res.redirect(`/book/${id}`);
+  })
+);
+//deleting the review from the book details
+app.delete(
+  "/book/:id/review/:reviewid",
+  wrapAsync(async (req, res) => {
+    const { id, reviewid } = req.params;
+    //here if we are deleting the revieiw the review should remove from the book database also
+    const camp = await BookData.findByIdAndUpdate(id, {
+      $pull: { reviews: reviewid },
+    });
+    //deleting the review form the review database
+    await Review.findByIdAndDelete(reviewid);
+    await camp.save();
+    res.redirect(`/book/${id}`);
   })
 );
 

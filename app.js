@@ -1,7 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 const methodOverride = require("method-override");
 const engine = require("ejs-mate");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 const BookData = require("./models/book");
 const Review = require("./models/review");
@@ -9,6 +12,9 @@ const Review = require("./models/review");
 const expressError = require("./errorhandling/expressError");
 const { bookvalidation, reviewValidation } = require("./yup");
 const wrapAsync = require("./errorhandling/wrapAsync");
+
+const bookRouter = require("./router/books");
+const reviewRouter = require("./router/review");
 
 //mongoose connection
 mongoose.connect("mongodb://127.0.0.1:27017/bookdirectory");
@@ -22,126 +28,41 @@ const app = express();
 
 app.engine("ejs", engine);
 
-app.set("views", __dirname + "/views");
+app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
 
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(flash());
 
+//session config
+const sessionConfig = {
+  name: "raju",
+  secret: "raju'stopsecretishere",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+
+app.use(session(sessionConfig));
+
+//middleware to dispaly the flash message
+app.use((req, res, next) => {
+  res.locals.done = req.flash("done");
+  res.locals.error = req.flash("error");
+  next();
+});
 //routes
 app.get("/", (req, res) => {
   res.render("home");
 });
-
-//routes for books
-//to dispaly all the book
-app.get(
-  "/book",
-  wrapAsync(async (req, res) => {
-    const book = await BookData.find({});
-    res.render("books/", { book });
-  })
-);
-//middleware to validate the new book is adding
-const validateBook = async (req, res, next) => {
-  const { ErrorMessage } = await bookvalidation.validate(req.body.BookData);
-  if (ErrorMessage) {
-    throw new expressError(msg, 400);
-  } else {
-    next();
-  }
-};
-//adding new book
-app.get("/book/new", (req, res) => {
-  res.render("books/new");
-});
-app.post(
-  "/book",
-  validateBook,
-  wrapAsync(async (req, res) => {
-    const books = await new BookData(req.body.BookData);
-    books.isAdminApproved = false;
-    await books.save();
-    res.redirect(`/book`);
-  })
-);
-//to show single book details
-app.get(
-  "/book/:id",
-  wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const book = await BookData.findById(id).populate("reviews");
-    res.render("books/show", { book });
-  })
-);
-//to edit the single book data
-app.get(
-  "/book/:id/edit",
-  wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const book = await BookData.findById(id);
-    res.render("books/edit", { book });
-  })
-);
-app.put(
-  "/book/:id",
-  validateBook,
-  wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const book = await BookData.findByIdAndUpdate(id, req.body.BookData);
-    await book.save();
-    res.redirect(`/book/${id}`);
-  })
-);
-//delete the single book data
-app.delete(
-  "/book/:id",
-  wrapAsync(async (req, res) => {
-    //if we are deleting a book data we also delete the all the reviews for that perticular book - code is in the models-books.js file
-    const { id } = req.params;
-    await BookData.findByIdAndDelete(id);
-    res.redirect(`/book`);
-  })
-);
-
-//the middleware to check the review
-const reviewvalidate = async (req, res, next) => {
-  const { error } = await reviewValidation.validate(req.body.Review);
-  if (error) {
-    throw new expressError(msg, 404);
-  } else {
-    next();
-  }
-};
-//adding review to the book details
-app.post(
-  "/book/:id/review",
-  reviewvalidate,
-  wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const book = await BookData.findById(id);
-    const review = await new Review(req.body.Review);
-    book.reviews.push(review);
-    await review.save();
-    await book.save();
-    res.redirect(`/book/${id}`);
-  })
-);
-//deleting the review from the book details
-app.delete(
-  "/book/:id/review/:reviewid",
-  wrapAsync(async (req, res) => {
-    const { id, reviewid } = req.params;
-    //here if we are deleting the revieiw the review should remove from the book database also
-    const camp = await BookData.findByIdAndUpdate(id, {
-      $pull: { reviews: reviewid },
-    });
-    //deleting the review form the review database
-    await Review.findByIdAndDelete(reviewid);
-    await camp.save();
-    res.redirect(`/book/${id}`);
-  })
-);
+app.use("/book", bookRouter);
+app.use("/", reviewRouter);
 
 //if the page is not defined
 app.all("*", (req, res, next) => {

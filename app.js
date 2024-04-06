@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -5,16 +9,22 @@ const methodOverride = require("method-override");
 const engine = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
 
 const BookData = require("./models/book");
 const Review = require("./models/review");
+const User = require("./models/user");
 
 const expressError = require("./errorhandling/expressError");
 const { bookvalidation, reviewValidation } = require("./yup");
 const wrapAsync = require("./errorhandling/wrapAsync");
+const { currentUser } = require("./middleware");
 
 const bookRouter = require("./router/books");
 const reviewRouter = require("./router/review");
+const userRouter = require("./router/user");
 
 //mongoose connection
 mongoose.connect("mongodb://127.0.0.1:27017/bookdirectory");
@@ -35,34 +45,34 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(flash());
+app.use(express.json());
+app.use(cookieParser());
+
+app.get("*", currentUser); //currentuser data is sending here
 
 //session config
 const sessionConfig = {
-  name: "raju",
-  secret: "raju'stopsecretishere",
+  secret: "thisismytopsecret",
   resave: false,
   saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
 };
 
 app.use(session(sessionConfig));
 
-//middleware to dispaly the flash message
+// Middleware to flash message
 app.use((req, res, next) => {
   res.locals.done = req.flash("done");
   res.locals.error = req.flash("error");
   next();
 });
+
 //routes
 app.get("/", (req, res) => {
   res.render("home");
 });
 app.use("/book", bookRouter);
 app.use("/", reviewRouter);
+app.use("/", userRouter);
 
 //if the page is not defined
 app.all("*", (req, res, next) => {

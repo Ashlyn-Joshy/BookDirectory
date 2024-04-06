@@ -3,55 +3,67 @@
   <div class="col-md-6 offset-md-3">
     <h1>add new book</h1>
     <form action="/book" class="form-validation" novalidate method="post">
-      <label class="form-label" for="title">Book title</label>
-      <input
-        type="text"
-        name="BookData[title]"
-        id="title"
-        required
-        class="form-control"
-      />
-      <label class="form-label" for="author">Author</label>
-      <input
-        type="text"
-        name="BookData[author]"
-        id="author"
-        required
-        class="form-control"
-      />
-      <label class="form-label" for="country">country</label>
-      <input
-        type="text"
-        name="BookData[country]"
-        id="country"
-        required
-        class="form-control"
-      />
-      <label class="form-label" for="language">language</label>
-      <input
-        type="text"
-        name="BookData[language]"
-        id="language"
-        required
-        class="form-control"
-      />
-      <label class="form-label" for="pages">pages</label>
-      <input
-        type="number"
-        name="BookData[pages]"
-        id="pages"
-        required
-        class="form-control"
-      />
-      <label class="form-label" for="year">year</label>
-      <input
-        type="number"
-        name="BookData[year]"
-        id="year"
-        required
-        class="form-control"
-      />
-      <button>submit</button>
+      <div class="mb-3">
+        <label class="form-label" for="title">Book title</label>
+        <input
+          type="text"
+          name="BookData[title]"
+          id="title"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="author">Author</label>
+        <input
+          type="text"
+          name="BookData[author]"
+          id="author"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="country">country</label>
+        <input
+          type="text"
+          name="BookData[country]"
+          id="country"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="language">language</label>
+        <input
+          type="text"
+          name="BookData[language]"
+          id="language"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="pages">pages</label>
+        <input
+          type="number"
+          name="BookData[pages]"
+          id="pages"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="year">year</label>
+        <input
+          type="number"
+          name="BookData[year]"
+          id="year"
+          required
+          class="form-control"
+        />
+      </div>
+      <button class="btn btn-success">submit</button>
     </form>
   </div>
   <a href="/book">back</a>

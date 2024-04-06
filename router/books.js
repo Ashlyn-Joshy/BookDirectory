@@ -4,7 +4,7 @@ const router = express.Router();
 const BookData = require("../models/book");
 
 const wrapAsync = require("../errorhandling/wrapAsync");
-const { validateBook } = require("../middleware");
+const { validateBook, auth } = require("../middleware");
 
 router
   .route("/")
@@ -27,8 +27,8 @@ router
     })
   );
 
-//adding new book
-router.get("/new", (req, res) => {
+//adding new book -user should logged in
+router.get("/new", auth, (req, res) => {
   res.render("books/new");
 });
 
@@ -38,7 +38,12 @@ router
   .get(
     wrapAsync(async (req, res) => {
       const { id } = req.params;
-      const book = await BookData.findById(id).populate("reviews");
+      const book = await BookData.findById(id).populate({
+        path: "reviews",
+        populate: {
+          path: "reviewwriter",
+        },
+      });
       res.render("books/show", { book });
     })
   )
@@ -53,8 +58,9 @@ router
       res.redirect(`/book/${id}`);
     })
   )
-  //delete the single book data
+  //delete the single book data -user should logged in
   .delete(
+    auth,
     wrapAsync(async (req, res) => {
       //if we are deleting a book data we also delete the all the reviews for that perticular book - code is in the models-books.js file
       const { id } = req.params;
@@ -64,9 +70,10 @@ router
     })
   );
 
-//to edit the single book data
+//to edit the single book data -user should logged in
 router.get(
   "/:id/edit",
+  auth,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const book = await BookData.findById(id);

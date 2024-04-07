@@ -1,21 +1,35 @@
 <% layout('layout/boilerplate') -%>
 
 <div class="container my-3">
+  <!-- searching the book by name  -->
+  <div class="input-group mb-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Book name"
+      aria-describedby="basic-addon1"
+      id="searchInput"
+      onkeyup="searchBooks()"
+    />
+    <button class="btn btn-primary" onclick="searchBooks()">Search</button>
+  </div>
   <h1>All Books</h1>
   <!-- displaying only the book data is approved by the admin -->
-  <% for(let b of book) {%> <% if(b.isAdminApproved === true){ %>
-  <div class="card mt-3">
-    <div class="card-body">
-      <h5 class="card-title"><%= b.title %></h5>
-      <h6 class="card-subtitle mb-2 text-body-secondary"><%= b.author %></h6>
-      <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk
-        of the card's content.
-      </p>
-      <a href="/book/<%= b.id %>" class="card-link btn btn-primary"
-        >view <%= b.title %></a
-      >
+  <div id="bookList">
+    <% for(let b of book) {%> <% if(b.isAdminApproved === true){ %>
+    <div class="card mt-3">
+      <div class="card-body">
+        <h5 class="card-title"><%= b.title %></h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary"><%= b.author %></h6>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+        <a href="/book/<%= b.id %>" class="card-link btn btn-primary"
+          >view <%= b.title %></a
+        >
+      </div>
     </div>
+    <% } %> <% } %>
   </div>
-  <% } %> <% } %>
 </div>

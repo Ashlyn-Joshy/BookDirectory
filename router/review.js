@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const wrapAsync = require("../errorhandling/wrapAsync");
-const { reviewvalidate, auth, currentUser } = require("../middleware");
+const {
+  reviewvalidate,
+  auth,
+  currentUser,
+  isReviewOwner,
+} = require("../middleware/user");
 
 const reviewController = require("../controllers/review");
 
@@ -17,6 +22,8 @@ router.post(
 router.delete(
   "/book/:id/review/:reviewid",
   auth,
+  currentUser,
+  isReviewOwner,
   wrapAsync(reviewController.deleteReview)
 );
 

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Books Directory</title>
+    <!-- link to the favicon -->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://img.freepik.com/free-vector/stack-colored-books_1262-4612.jpg?t=st=1711484373~exp=1711487973~hmac=fca6678fb4aff230e689039d1529b2476faeda7d003599d17a31d619515bae91&w=740"
+    />
+    <!-- link to the bootstrap css file -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="d-flex flex-column vh-100">
+    <!-- navbar -->
+    <%- include('../partials/adminNavbar') %>
+    <!-- this is the body part -->
+    <div class="container my-2">
+      <!-- flash message -->
+      <%- include('../partials/flash') %>
+      <!-- rest of the body will be dispaly here -->
+      <%- body -%>
+    </div>
+    <!-- footer -->
+    <%- include('../partials/footer') %>
+    <!-- link to the bootstrap script file -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <!-- form formValidation  -->
+    <script src="/javascript/formvalidation.js"></script>
+    <!-- search book by name -->
+    <script src="/javascript/adminSearchBook.js"></script>
+  </body>
+</html>

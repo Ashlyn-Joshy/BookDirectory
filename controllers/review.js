@@ -16,12 +16,12 @@ module.exports.addReview = async (req, res) => {
 module.exports.deleteReview = async (req, res) => {
   const { id, reviewid } = req.params;
   //here if we are deleting the revieiw the review should remove from the book database also
-  const camp = await BookData.findByIdAndUpdate(id, {
+  const book = await BookData.findByIdAndUpdate(id, {
     $pull: { reviews: reviewid },
   });
   //deleting the review form the review database
   await Review.findByIdAndDelete(reviewid);
-  await camp.save();
+  await book.save();
   req.flash("error", "Review is deleted");
   res.redirect(`/book/${id}`);
 };

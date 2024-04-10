@@ -24,6 +24,7 @@ const seedDB = async () => {
       title: `${book[randomBook].title}`,
       year: `${book[randomBook].year}`,
       isAdminApproved: true,
+      userOwner: "6611bfc04269a5705210f0d9",
     });
     await books.save();
   }

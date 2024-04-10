@@ -9,22 +9,16 @@ const methodOverride = require("method-override");
 const engine = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 
-const BookData = require("./models/book");
-const Review = require("./models/review");
-const User = require("./models/user");
-
 const expressError = require("./errorhandling/expressError");
-const { bookvalidation, reviewValidation } = require("./yup");
-const wrapAsync = require("./errorhandling/wrapAsync");
-const { currentUser } = require("./middleware");
+const { currentUser } = require("./middleware/user");
+const { currentUserAdmin } = require("./middleware/admin");
 
 const bookRouter = require("./router/books");
 const reviewRouter = require("./router/review");
 const userRouter = require("./router/user");
+const adminRouter = require("./router/admin");
 
 //mongoose connection
 mongoose.connect("mongodb://127.0.0.1:27017/bookdirectory");
@@ -49,6 +43,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get("*", currentUser); //currentuser data is sending here
+app.get("*", currentUserAdmin); //current data about the admin
 
 //session config
 const sessionConfig = {
@@ -73,6 +68,7 @@ app.get("/", (req, res) => {
 app.use("/book", bookRouter);
 app.use("/", reviewRouter);
 app.use("/", userRouter);
+app.use("/admin", adminRouter);
 
 //if the page is not defined
 app.all("*", (req, res, next) => {

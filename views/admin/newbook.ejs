@@ -1,0 +1,75 @@
+<% layout('layout/adminBoilerplate') -%>
+<div class="row mx-2">
+  <div class="col-md-6 offset-md-3">
+    <h1>add new book</h1>
+    <form
+      action="/admin/index"
+      class="form-validation"
+      novalidate
+      method="post"
+    >
+      <div class="mb-3">
+        <label class="form-label" for="title">Book title</label>
+        <input
+          type="text"
+          name="Books[title]"
+          id="title"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="author">Author</label>
+        <input
+          type="text"
+          name="Books[author]"
+          id="author"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="country">country</label>
+        <input
+          type="text"
+          name="Books[country]"
+          id="country"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="language">language</label>
+        <input
+          type="text"
+          name="Books[language]"
+          id="language"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="pages">pages</label>
+        <input
+          type="number"
+          name="Books[pages]"
+          id="pages"
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="year">year</label>
+        <input
+          type="number"
+          name="Books[year]"
+          id="year"
+          required
+          class="form-control"
+        />
+      </div>
+      <button class="btn btn-success">submit</button>
+    </form>
+  </div>
+  <a href="/admin/index">back</a>
+</div>

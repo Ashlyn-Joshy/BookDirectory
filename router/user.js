@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { signupInfo } = require("../middleware");
+const { signupInfo } = require("../middleware/user");
 
 const wrapAsync = require("../errorhandling/wrapAsync");
 

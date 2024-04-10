@@ -1,9 +1,9 @@
-<% layout('layout/boilerplate') -%>
+<% layout('layout/adminBoilerplate') -%>
 <div class="row mx-2">
   <div class="col-md-6 offset-md-3">
     <h1>Edit</h1>
     <form
-      action="/book/<%= book.id %>?_method=PUT"
+      action="/admin/book/<%= book.id %>?_method=PUT"
       method="post"
       class="form-validation"
       novalidate
@@ -12,7 +12,7 @@
       <input
         class="form-control"
         type="text"
-        name="BookData[title]"
+        name="Books[title]"
         id="title"
         required
         value="<%= book.title %>"
@@ -20,7 +20,7 @@
       <label class="form-label" for="author">Author</label>
       <input
         type="text"
-        name="BookData[author]"
+        name="Books[author]"
         id="author"
         required
         class="form-control"
@@ -29,7 +29,7 @@
       <label class="form-label" for="country">country</label>
       <input
         type="text"
-        name="BookData[country]"
+        name="Books[country]"
         id="country"
         required
         class="form-control"
@@ -38,7 +38,7 @@
       <label class="form-label" for="language">language</label>
       <input
         type="text"
-        name="BookData[language]"
+        name="Books[language]"
         id="language"
         required
         class="form-control"
@@ -47,7 +47,7 @@
       <label class="form-label" for="pages">pages</label>
       <input
         type="number"
-        name="BookData[pages]"
+        name="Books[pages]"
         id="pages"
         required
         class="form-control"
@@ -56,15 +56,40 @@
       <label class="form-label" for="year">year</label>
       <input
         type="number"
-        name="BookData[year]"
+        name="Books[year]"
         id="year"
         required
         class="form-control"
         value="<%= book.year %>"
       />
+      <label class="form-label" for="isAdminApproved">Admin Approved</label>
+      <select
+        class="form-select"
+        id="isAdminApproved"
+        name="Books[isAdminApproved]"
+        aria-label="Default select example"
+      >
+        <option value="false" <% if (!book.isAdminApproved) { %>
+          selected <% } %>>False
+        </option>
+        <option value="true" <% if (book.isAdminApproved) { %>
+          selected <% } %>>True
+        </option>
+      </select>
       <button class="btn btn-success mt-3">done</button>
     </form>
 
-    <a href="/book/<%= book.id %>">back</a>
+    <a href="/admin/book/<%= book.id %>">back</a>
   </div>
 </div>
+
+<script>
+  // JavaScript to update the value of books[isAdminApproved] based on user selection
+  document
+    .getElementById("isAdminApproved")
+    .addEventListener("change", function () {
+      var selectElement = document.getElementById("isAdminApproved");
+      var value = selectElement.options[selectElement.selectedIndex].value;
+      document.getElementsByName("Books[isAdminApproved]")[0].value = value;
+    });
+</script>

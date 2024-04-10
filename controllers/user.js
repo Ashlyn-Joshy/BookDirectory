@@ -34,8 +34,7 @@ module.exports.signup = async (req, res) => {
     req.flash("done", "Welcome to the book directory");
     res.redirect("/book");
   } catch (error) {
-    console.log(error);
-    res.status(400).json("error, user not created");
+    res.status(400).json(error.message);
   }
 };
 

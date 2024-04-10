@@ -10,7 +10,14 @@
         <p class="card-text">language: <%= book.language %></p>
         <p class="card-text">pages: <%= book.pages %></p>
         <p class="card-text">year: <%= book.year %></p>
+        <% if(book.userOwner){ %>
+        <p class="card-text">Information from : <%= book.userOwner.name %></p>
+        <% } else {%>
+        <p class="card-text">Information from : Admin</p>
+        <% } %>
       </div>
+      <!-- only the owner can edit and delete the book data -->
+      <% if( user && user.equals(book.userOwner)){ %>
       <div class="card-footer text-body-secondary">
         <a href="/book/<%= book.id %>/edit" class="btn btn-success">Edit</a>
         <form
@@ -21,6 +28,7 @@
           <button class="btn btn-danger">Delete</button>
         </form>
       </div>
+      <% } %>
     </div>
   </div>
   <div class="col-md-6 my-5">
@@ -66,9 +74,8 @@
     <% for(let r of book.reviews){ %>
     <div class="card mb-2">
       <div class="card-body">
-        <h5 class="card-title">
-          By: <%= r.reviewwriter.name %> Rating : <%= r.rating %>
-        </h5>
+        <h5 class="card-title">Rating : <%= r.rating %></h5>
+        <h6>By: <%= r.reviewwriter.name %></h6>
         <p class="card-text">Review : <%= r.text %></p>
         <!-- if the user is logged in and the review writer user is the same person delete button will dispaly -->
         <% if( user && user._id.equals(r.reviewwriter._id)){ %>

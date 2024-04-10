@@ -1,0 +1,42 @@
+<% layout('layout/adminBoilerplate') -%>
+<div class="container my-3">
+  <!-- searching the book by name -->
+  <div class="input-group mb-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Book name"
+      aria-describedby="basic-addon1"
+      id="searchInput"
+      onkeyup="searchBooks()"
+    />
+    <button class="btn btn-primary" onclick="searchBooks()">Search</button>
+  </div>
+
+  <!-- display all the books -->
+  <h1>All Books</h1>
+  <div id="bookList">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Details</th>
+          <th scope="col">isAdminApproved</th>
+        </tr>
+      </thead>
+      <tbody id="bookTableBody">
+        <% for(let b of books) {%>
+        <tr>
+          <td><%= b.title %></td>
+          <td>
+            <a href="/admin/book/<%= b.id %>" class="card-link btn btn-primary"
+              >view
+            </a>
+          </td>
+          <td><%= b.isAdminApproved %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>

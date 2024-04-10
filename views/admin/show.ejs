@@ -1,0 +1,54 @@
+<% layout('layout/adminBoilerplate') -%>
+<div class="row mx-2">
+  <!-- to display the details of the books -->
+  <div class="col-md-6">
+    <div class="card text-center my-5">
+      <div class="card-header"><%= book.title %></div>
+      <div class="card-body">
+        <h5 class="card-title">Author: <%= book.author %></h5>
+        <p class="card-text">country: <%= book.country %></p>
+        <p class="card-text">language: <%= book.language %></p>
+        <p class="card-text">pages: <%= book.pages %></p>
+        <p class="card-text">year: <%= book.year %></p>
+        <p class="card-text">Admin Approved: <%= book.isAdminApproved %></p>
+        <% if(book.userOwner){ %>
+        <p class="card-text">Information from : <%= book.userOwner.name %></p>
+        <% } else {%>
+        <p>Information from : <%= book.adminOwner.adminId %></p>
+        <% } %>
+      </div>
+      <div class="card-footer text-body-secondary">
+        <a href="/admin/book/<%= book.id %>/edit" class="btn btn-success"
+          >Edit</a
+        >
+        <form
+          action="/admin/book/<%= book.id %>?_method=DELETE"
+          method="post"
+          class="d-inline"
+        >
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 my-5">
+    <!-- the reviews will be display here -->
+    <h1 class="my-3">Reviews</h1>
+    <% for(let r of book.reviews){ %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <h5 class="card-title">Rating : <%= r.rating %></h5>
+        <h6>By: <%= r.reviewwriter.name %></h6>
+        <p class="card-text">Review : <%= r.text %></p>
+        <form
+          action="/admin/book/<%= book.id %>/review/<%= r.id %>?_method=DELETE"
+          method="post"
+        >
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+    <% } %>
+  </div>
+  <a href="/admin/index">back</a>
+</div>

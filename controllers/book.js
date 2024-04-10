@@ -7,6 +7,7 @@ module.exports.dispalybooks = async (req, res) => {
 
 module.exports.addbook = async (req, res) => {
   const books = await new BookData(req.body.BookData);
+  books.userOwner = req.user._id;
   books.isAdminApproved = false;
   await books.save();
   req.flash("done", "New book request is send to admin");
@@ -19,12 +20,15 @@ module.exports.addbookform = (req, res) => {
 
 module.exports.bookdetails = async (req, res) => {
   const { id } = req.params;
-  const book = await BookData.findById(id).populate({
-    path: "reviews",
-    populate: {
-      path: "reviewwriter",
-    },
-  });
+  const book = await BookData.findById(id)
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "reviewwriter",
+      },
+    })
+    .populate("userOwner")
+    .populate("adminOwner");
   res.render("books/show", { book });
 };
 

@@ -1,11 +1,15 @@
 const jwt = require("jsonwebtoken");
 
-const BookData = require("./models/book");
-const Review = require("./models/review");
-const User = require("./models/user");
+const BookData = require("../models/book");
+const Review = require("../models/review");
+const User = require("../models/user");
 
-const expressError = require("./errorhandling/expressError");
-const { bookvalidation, reviewValidation, singupValidation } = require("./yup");
+const expressError = require("../errorhandling/expressError");
+const {
+  bookvalidation,
+  reviewValidation,
+  singupValidation,
+} = require("../yup");
 
 //middleware to validate the new book is adding
 module.exports.validateBook = async (req, res, next) => {
@@ -86,4 +90,26 @@ module.exports.currentUser = async (req, res, next) => {
     res.locals.user = null;
     next();
   }
+};
+
+//the middleware to check the is owner of the book information
+module.exports.isOwner = async (req, res, next) => {
+  const { id } = req.params;
+  const book = await BookData.findById(id).populate("userOwner");
+  if (!book.userOwner.equals(req.user?.id)) {
+    req.flash("error", "You have no permission to do that");
+    return res.redirect(`/book/${id}`);
+  }
+  next();
+};
+
+//checking if review owner is the same person to to delete the review
+module.exports.isReviewOwner = async (req, res, next) => {
+  const { id, reviewid } = req.params;
+  const review = await Review.findById(reviewid);
+  if (!review.reviewwriter.equals(req.user?.id)) {
+    req.flash("error", "You have no permission to do that");
+    return res.redirect(`/book/${id}`);
+  }
+  next();
 };

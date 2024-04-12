@@ -10,6 +10,8 @@ const engine = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
+const MongoStore = require("connect-mongo");
+const mongoSanitize = require("express-mongo-sanitize");
 
 const expressError = require("./errorhandling/expressError");
 const { currentUser } = require("./middleware/user");
@@ -21,7 +23,15 @@ const userRouter = require("./router/user");
 const adminRouter = require("./router/admin");
 
 //mongoose connection
-mongoose.connect("mongodb://127.0.0.1:27017/bookdirectory");
+const database =
+  process.env.DB_URL || "mongodb://127.0.0.1:27017/bookdirectory";
+mongoose.connect(database);
+mongoose.connect(database, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+});
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -41,13 +51,31 @@ app.use(methodOverride("_method"));
 app.use(flash());
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  mongoSanitize({
+    replaceWith: "_",
+  })
+);
 
 app.get("*", currentUser); //currentuser data is sending here
 app.get("*", currentUserAdmin); //current data about the admin
 
+const secret = process.env.SECRET || "thisismytopsecret";
+const store = MongoStore.create({
+  mongoUrl: database,
+  touchAfter: 24 * 60 * 60,
+  secret,
+});
+
+store.on("error", function (e) {
+  console.log("section store error", e);
+});
+
 //session config
 const sessionConfig = {
-  secret: "thisismytopsecret",
+  store,
+  name: "session",
+  secret,
   resave: false,
   saveUninitialized: true,
 };

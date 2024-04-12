@@ -3,6 +3,8 @@
 <div class="col-md-6 offset-md-3">
   <div>
     <h1><%= err.message %></h1>
+    <% if (process.env.NODE_ENV !== "production") { %>
     <p><%= err.stack %></p>
+    <% } %>
   </div>
 </div>

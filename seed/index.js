@@ -1,10 +1,16 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const mongoose = require("mongoose");
 const book = require("./books");
 const BookData = require("../models/book");
 const Review = require("../models/review");
 
 //mongoose connection
-mongoose.connect("mongodb://127.0.0.1:27017/bookdirectory");
+const database =
+  process.env.DB_URL || "mongodb://127.0.0.1:27017/bookdirectory";
+mongoose.connect(database);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -24,7 +30,7 @@ const seedDB = async () => {
       title: `${book[randomBook].title}`,
       year: `${book[randomBook].year}`,
       isAdminApproved: true,
-      userOwner: "6611bfc04269a5705210f0d9",
+      userOwner: "6616be83caeb2f6ae5585cb3",
     });
     await books.save();
   }

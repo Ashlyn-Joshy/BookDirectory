@@ -52,7 +52,7 @@ router.get("/addbook", authAdmin, adminControllers.addNewBookForm);
 
 //new book request from the user side waiting for the approval
 router.get(
-  "/book/request",
+  "/bookrequest",
   authAdmin,
   wrapAsync(adminControllers.bookForApproval)
 );

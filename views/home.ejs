@@ -1,2 +1,93 @@
-<% layout('layout/boilerplate') -%>
-<h1>home page</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Directory</title>
+    <!-- link to the favicon -->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://img.freepik.com/free-vector/stack-colored-books_1262-4612.jpg?t=st=1711484373~exp=1711487973~hmac=fca6678fb4aff230e689039d1529b2476faeda7d003599d17a31d619515bae91&w=740"
+    />
+    <!-- link to the bootstrap css file -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- styling the home page -->
+    <link rel="stylesheet" href="/stylesheet/home.css" />
+  </head>
+  <body class="d-flex flex-column text-center">
+    <header class="mb-auto">
+      <div class="mx-5 my-4">
+        <div class="float-md-start navhead"><h3>Book Directory</h3></div>
+        <div class="float-md-end d-none d-md-block navlinks">
+          <% if(user){ %>
+          <a href="">Welcome <%= user.name %></a>
+          <a href="/logout">logout</a>
+          <% } else{ %>
+          <a href="/signin">Sing In</a>
+          <a href="/signup">Sign Up</a>
+          <% } %>
+        </div>
+      </div>
+    </header>
+    <!-- details -->
+    <div class="container mt-auto details mb-auto py-3">
+      <div class="row">
+        <div class="col-md-6">
+          <img
+            src="https://images.unsplash.com/photo-1568667256531-7d5ac92eaa7a?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="book"
+            class="img-fluid"
+          />
+        </div>
+        <div class="col-md-6" id="info">
+          <h1>Book Directory</h1>
+          <p>
+            Welcome to Book Directory, your go-to destination for discovering
+            and exploring a vast collection of books. Our mission is to connect
+            readers with their next favorite read. Books Directory is a daily
+            growing list of links to freely accessible ebooks, documents and
+            lecture notes found all over the internet. You can submit your own
+            ebooks, or add other resources you come across.
+          </p>
+          <a href="/book"
+            >Books
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-right-square"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"
+              /></svg
+          ></a>
+        </div>
+      </div>
+    </div>
+    <!-- footer section for the home page -->
+    <footer class="mt-auto py-3">
+      <div class="container">
+        <span>&#169; Book Directory</span>
+      </div>
+    </footer>
+
+    <!-- link to the bootstrap script file -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <!-- <footer class="footer text-center bg-light mt-auto py-3">
+      <span class="text-secondary">&copy; Book Directory 2024</span>
+    </footer> -->
+  </body>
+</html>
